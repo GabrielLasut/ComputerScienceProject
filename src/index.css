@@ -11,3 +11,30 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.bar{
+  top: 0px;
+  width: 100vw;
+  height: 10vh;
+  background-color: green;
+  color: white;
+}
+
+.barImage{
+  left: 0.5vw;
+  top: 2.5vh;
+  height: 5vh;
+  position: absolute;
+}
+
+.barText{
+  left: 50vw;
+  top: 2.5vh;
+  font-size: 4.5vh;
+  position: absolute;
+}
+
+.pdfView{
+  height: 60vh;
+  width: 100vw;
+}

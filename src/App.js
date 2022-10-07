@@ -1,25 +1,31 @@
-import logo from './logo.svg';
+import React from 'react';
+import TopBar from './components/TopBar';
+import RequestFile from './components/RequestFile';
+import AuditReport from './components/AuditReport';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  let [file, setFile] = React.useState(null);
+  let [button, setButton] = React.useState(false);
+  if(!button){
+    return(
+      <div>
+        <TopBar />
+        Audit this File:
+        <RequestFile setFile={setFile} setButton={setButton}/>
+      </div>
+    )
+  }
+  else{
+    return (
+      <div>
+        <TopBar />
+        <AuditReport file={file} />
+        Audit Another file:
+        <button onClick={()=>setButton(false)}>Click to go back</button>
+      </div>
+    );
+  }
 }
 
 export default App;
