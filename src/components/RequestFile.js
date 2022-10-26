@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 export default function RequestFile(input){
     let readFile = (e) =>{
         // input.setFile(document.getElementById("file"))
@@ -6,7 +7,16 @@ export default function RequestFile(input){
         let reader = new FileReader();
         reader.readAsDataURL(selectedFile);
         reader.onloadend=(e)=>{
-          input.setFile(e.target.result);
+        //   input.setFile(e.target.result);
+        console.log(e.target.result);
+        let formData = new FormData();
+        formData.append("filetoupload", selectedFile);
+
+        axios.post('http://localhost:8080/fileupload', formData, {
+            headers: {
+            "Content-Type": "multipart/form-data",
+            }
+        });
         }
     }
     return(
