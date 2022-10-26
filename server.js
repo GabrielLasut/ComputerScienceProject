@@ -2,10 +2,7 @@
 const http = require('http');
 const formidable = require('formidable');
 const fs = require('fs');
-var pdfUtil = require('pdf-to-text');
 const { PdfReader } = require("pdfreader");
-const express = require("express")
-const app = express()
 
 
 http.createServer(function (req, res) {
@@ -44,12 +41,12 @@ http.createServer(function (req, res) {
             });
         });
     }
-    else {
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
-        res.write('<input type="file" name="filetoupload"><br>');
-        res.write('<input type="submit">');
-        res.write('</form>');
-        return res.end();
-    }
+    // else {
+    //     res.writeHead(200, { 'Content-Type': 'text/html' });
+    //     res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
+    //     res.write('<input type="file" name="filetoupload"><br>');
+    //     res.write('<input type="submit">');
+    //     res.write('</form>');
+    //     return res.end();
+    // }
 }).listen(8080);
