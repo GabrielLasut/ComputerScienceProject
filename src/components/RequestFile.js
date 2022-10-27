@@ -8,7 +8,7 @@ export default function RequestFile(input){
         reader.readAsDataURL(selectedFile);
         reader.onloadend=(e)=>{
         //   input.setFile(e.target.result);
-        console.log(e.target.result);
+        // console.log(e.target.result);
         let formData = new FormData();
         formData.append("filetoupload", selectedFile);
 
