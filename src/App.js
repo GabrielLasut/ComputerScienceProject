@@ -5,14 +5,13 @@ import AuditReport from './components/AuditReport';
 import './App.css';
 
 function App() {
-  let [file, setFile] = React.useState(null);
   let [button, setButton] = React.useState(false);
   if(!button){
     return(
       <div>
         <TopBar />
         Audit this File:
-        <RequestFile setFile={setFile} setButton={setButton}/>
+        <RequestFile setButton={setButton}/>
       </div>
     )
   }
@@ -20,7 +19,7 @@ function App() {
     return (
       <div>
         <TopBar />
-        <AuditReport file={file} />
+        <AuditReport/>
         Audit Another file:
         <button onClick={()=>setButton(false)}>Click to go back</button>
       </div>
