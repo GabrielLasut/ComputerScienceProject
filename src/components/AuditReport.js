@@ -3,7 +3,6 @@ import React from "react";
 export default function AuditReport(){
     return(
         <div>
-            file here
             {/* all you have to do is audit the text file here, purely math and parsing the file to find values wanted */}
         </div>
     )

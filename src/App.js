@@ -2,26 +2,44 @@ import React from 'react';
 import TopBar from './components/TopBar';
 import RequestFile from './components/RequestFile';
 import AuditReport from './components/AuditReport';
-import './App.css';
+import {Button, Typography} from "@mui/material"
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
 
 function App() {
   let [button, setButton] = React.useState(false);
+  const darkTheme = createTheme({
+    palette: {
+      background: {
+        paper: 'red',
+      },
+      mode: 'dark',
+    },
+  });
+
   if(!button){
     return(
       <div>
-        <TopBar />
-        Audit this File:
-        <RequestFile setButton={setButton}/>
+        <ThemeProvider theme={darkTheme} sx={{bgcolor: 'background.paper'}}>
+          <Typography align='center'>
+            <TopBar />
+            <RequestFile setButton={setButton}/>
+          </Typography>
+        </ThemeProvider>
       </div>
     )
   }
   else{
     return (
       <div>
-        <TopBar />
-        <AuditReport/>
-        Audit Another file:
-        <button onClick={()=>setButton(false)}>Click to go back</button>
+        <ThemeProvider theme={darkTheme}>
+          <Typography align='center'>
+            <TopBar />
+            <AuditReport/>
+            Audit Another file:
+            <Button variant="contained" onClick={()=>setButton(false)}>Click to go back</Button>
+          </Typography>
+        </ThemeProvider>
       </div>
     );
   }

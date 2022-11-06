@@ -1,12 +1,34 @@
-import React from "react";
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 import logo from "../Images/logo.png"
-export default function TopBar(){
-    return(
-        <div className="bar">
-            <img src={logo} className="barImage" alt="logo"/>
-            <div className="barText">
-                UTD Audit Application
+
+
+export default function TopBar() {
+
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            UTD Audit Application
+          </Typography>
+            <div>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <img src={logo} height={90} alt='logo'/>
+              </IconButton>
             </div>
-        </div>
-    )
+        </Toolbar>
+      </AppBar>
+    </Box>
+  );
 }
