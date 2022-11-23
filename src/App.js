@@ -12,6 +12,7 @@ function App() {
         <TopBar />
         Audit this File:
         <RequestFile setButton={setButton}/>
+        <AuditReport/>
       </div>
     )
   }

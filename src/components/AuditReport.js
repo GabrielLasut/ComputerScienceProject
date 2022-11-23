@@ -1,10 +1,34 @@
+
 import React from "react";
-// import textversion from "../../uploaded_file/textversion.txt"// something like this, not sure if it will work
+import jsPDF from 'jspdf'
+import {exportcore_gpa,exportfinal_core_courses,exportfinal_elective_courses,exportelective_gpa} from  "../server.js"
 export default function AuditReport(){
-    return(
-        <div>
-            file here
-            {/* all you have to do is audit the text file here, purely math and parsing the file to find values wanted */}
-        </div>
-    )
+let pdfGenerate=()=>{
+    var doc=new jsPDF('landscape','px','a4','false');
+    doc.text({exportcore_gpa}, 10, 10);
+    doc.text({exportfinal_core_courses,}, 10, 10);
+    doc.text({exportfinal_elective_courses}, 10, 10);
+    doc.text({exportelective_gpa}, 10, 10);
+    doc.save("a4.pdf");
 }
+
+
+//core_gpa ,final_core_courses,final_elective_courses , elective_gpa
+    return(
+        <div style={{textAlign:'center'}}> <br/>
+           <button onClick={pdfGenerate}> Download pdf
+               </button>
+        </div>
+    );
+}
+
+
+
+
+
+
+
+
+
+
+
