@@ -35,10 +35,9 @@ function App() {
         <ThemeProvider theme={darkTheme}>
           <Typography align='center'>
             <TopBar />
-            
+            <AuditReport/>
             Audit Another file:
             <Button variant="contained" onClick={()=>setButton(false)}>Click to go back</Button>
-          <AuditReport/>
           </Typography>
         </ThemeProvider>
       </div>

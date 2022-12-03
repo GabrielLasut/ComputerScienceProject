@@ -9,7 +9,7 @@ var html_to_pdf = require('html-pdf-node');
 let options = { format: 'A4' };
 
 var pdf = require('html-pdf');
-//var html = fs.readFileSync('./uploaded_file/test.html', 'utf8');
+//var html = fs.readFileSync('./src/uploaded_file/test.html', 'utf8');
 var options1 = { format: 'Letter' };
 
 let course_data = require("./course_data")
@@ -40,8 +40,8 @@ http.createServer(function (req, res) {
         form.parse(req, function (err, fields, files) {
   
             var tempFilePath = files.filetoupload.filepath;
-            var projectFilePath = __dirname + '/uploaded_file/' + "targetFile.pdf" //files.filetoupload.originalFilename;
-            let textversion = __dirname + '/uploaded_file/' + "textverson.txt" 
+            var projectFilePath = __dirname + '/src/uploaded_file/' + "targetFile.pdf" //files.filetoupload.originalFilename;
+            let textversion = __dirname + '/src/uploaded_file/' + "textverson.txt" 
                 
                 fs.rename(tempFilePath, projectFilePath, function (err) {
                 if (err) throw err;
@@ -225,7 +225,7 @@ http.createServer(function (req, res) {
                         let trackIndex = parseInt(track) - 1
                         audit(course_data[trackIndex], courseDict, transferCourseList, studentObject)                        
                         
-                        fs.writeFile('./uploaded_file/textversion.txt', holder, function (err) {
+                        fs.writeFile('./src/uploaded_file/textversion.txt', holder, function (err) {
                             if (err) throw err;
                             console.log('File is created successfully.');
                           });
@@ -506,7 +506,7 @@ function audit(courseObject, courseDict, transferCourseList, studentObject){
             <body>${studentName} ${studentID} ${core_course_table} <br> ${elective_course_table} <br> ${additional_elective_couse_table}</body>
         <html>`                
 
-    pdf.create(content, options).toFile('./businesscard.pdf', function(err, res) { 
+    pdf.create(content, options).toFile('./src/businesscard.pdf', function(err, res) { 
         if (err) return console.log(err); 
         console.log(res); // { filename: '/app/businesscard.pdf' }
     }); 
