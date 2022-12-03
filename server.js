@@ -1,8 +1,16 @@
+
 const http = require('http');
 const formidable = require('formidable');
 const fs = require('fs');
 const {PdfReader} = require("pdfreader");
 const {TableParser} = require("pdfreader")
+
+var html_to_pdf = require('html-pdf-node');
+let options = { format: 'A4' };
+
+var pdf = require('html-pdf');
+//var html = fs.readFileSync('./uploaded_file/test.html', 'utf8');
+var options1 = { format: 'Letter' };
 
 let course_data = require("./course_data")
 //console.log(course_data[0]);
@@ -212,7 +220,7 @@ http.createServer(function (req, res) {
                             if(pageNumber > 1){
                                 pageChanged = true
                             }
-                        } 
+                        }  
                         rows = {}; // clear rows for next page
                         let trackIndex = parseInt(track) - 1
                         audit(course_data[trackIndex], courseDict, transferCourseList, studentObject)                        
@@ -222,7 +230,7 @@ http.createServer(function (req, res) {
                             console.log('File is created successfully.');
                           });
                         //console.warn("end of file");
-                    }
+                    } 
                     else if (item.text){
                         holder += item.text + " ";
                         (rows[item.y] = rows[item.y] || []).push(item.text);
@@ -283,7 +291,7 @@ function audit(courseObject, courseDict, transferCourseList, studentObject){
                         partial_course.push(course) 
                     }
                     counter+=1
-                }
+                } 
             }
             
             //inserting course into elective or levelling if not found in core or partial core
@@ -396,13 +404,118 @@ function audit(courseObject, courseDict, transferCourseList, studentObject){
 
     
     console.log("Transfer courses", transferCourseList);
+   
+    //generating pdf
+    let studentName = `<h4>Name of Student: ${studentObject.name}</h4>`
+    let studentID = `<h4>Student I.D Number: ${studentObject.id}</h4><br>`
+    let style1 = `style="border-collapse:collapse; border:1px solid black"`
+    let mainStyle = `<style>table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding:10px;
+      }</style>`
     
+    let table_header_style = `
+      style="background-color:royalblue; color:white"
+    `
+    let table_heading = `
+        <tr>
+            <th>Course Title</th>
+            <th>Course Number</th>
+            <th>UTD Semester</th>
+            <th>Transfer</th>
+            <th>Grade</th>
+        </tr>
+    ` 
+    //turning core course into html elemts
+    let core_course_tr = core_course.map((course)=>{
+        let testCounter = 0
+        console.log("dig");
+        console.log(course.course_number);
+        if(transferCourseList.length > 0){
+            while(testCounter < transferCourseList.length){
+                let courseArray = String(transferCourseList[testCounter]).split(" ")
+                if(courseArray[0] === (course.course_title).trim() && courseArray[2] === course.course_number){
+                    console.log("e");
+                    return `<tr><td>${course.course_description}</td> <td>${course.course_title} ${course.course_number}</td> <td>${course.semester}</td> <td>T/F</td> <td>${course.grade}</td><tr>`
+                }
+                
+                testCounter+=1
+                if(testCounter == transferCourseList.length){
+                    console.log("h");
+                    return `<tr><td>${course.course_description}</td> <td>${course.course_title} ${course.course_number}</td> <td>${course.semester}</td> <td> </td> <td>${course.grade}</td><tr>`
+
+                }
+            }
+        }else{
+            return `<tr><td>${course.course_description}</td> <td>${course.course_title} ${course.course_number}</td> <td>${course.semester}</td> <td> </td> <td>${course.grade}</td><tr>`
+
+        }
+
+    })
+    let core_course_table = `<table>${table_heading}<tr ${table_header_style}><th colspan='5'>Core Course  &nbsp  (15 Creit Hours) &nbsp 3.19 Grade Point Average Required</th></tr> ${core_course_tr.map((course)=> course)}</table>`
+    
+    //turning elective course into html elemts
+    let elective_course_tr = elective_course.map((course)=>{
+        let testCounter = 0
+        if(transferCourseList.length > 0){
+            while(testCounter < transferCourseList.length){ 
+                let courseArray = String(transferCourseList[testCounter]).split(" ")
+                if(courseArray[0] === (course.course_title).trim() && courseArray[2] === course.course_number){
+                    return `<tr><td>${course.course_description}</td> <td>${course.course_title} ${course.course_number}</td> <td>${course.semester}</td> <td>T/F</td> <td>${course.grade}</td><tr>`
+                }
+                testCounter+=1
+                if(testCounter == transferCourseList.length){
+                    return `<tr><td>${course.course_description}</td> <td>${course.course_title} ${course.course_number}</td> <td>${course.semester}</td> <td> </td> <td>${course.grade}</td><tr>`
+
+                }
+            }
+        }else{
+            return `<tr><td>${course.course_description}</td> <td>${course.course_title} ${course.course_number}</td> <td>${course.semester}</td> <td> </td> <td>${course.grade}</td><tr>`
+
+        }
+ 
+    })
+
+    console.log("elective len " + elective_course_tr.length);
+    let some_counter = 0
+    let elective_course_element = []
+    let additional_elective = []
+    let elective_course_copy = [...elective_course_tr]
+    while(some_counter < elective_course_tr.length){
+        if(some_counter < 5){
+            elective_course_element.push(elective_course_copy.pop())
+        }else{ 
+            additional_elective.push(elective_course_copy.pop())
+        }
+        some_counter+=1
+    }
+
+    console.log("core course len ");
+    console.log(core_course_tr);
+    //console.log("elective a len " + elective_course_element.length); 
+    //console.log("elective b len " + additional_elective);
+
+  
+
+    let elective_course_table = `<table><tr ${table_header_style}><th colspan='5'>FIVE APPROVED 6000 LEVEL ELECTIVES (15 * Credit Hours) 3.0 Grade Point Average</th></tr> ${elective_course_element.map((course)=> course)}</table>`
+    let additional_elective_couse_table = `<table><tr ${table_header_style}><th colspan='5'>Additional Electives</th></tr> ${additional_elective.map((course)=> course)}</table>`
+
+    let content = `<html>
+            <head>${mainStyle}</head> 
+            <body>${studentName} ${studentID} ${core_course_table} <br> ${elective_course_table} <br> ${additional_elective_couse_table}</body>
+        <html>`                
+
+    pdf.create(content, options).toFile('./businesscard.pdf', function(err, res) { 
+        if (err) return console.log(err); 
+        console.log(res); // { filename: '/app/businesscard.pdf' }
+    }); 
 
 
-}     
-
+}           
+ 
 //cyber security track
-let exampleCourseObject = [
+let exampleCourseObject = [  
     //core
     {
         course_title:"CS",
