@@ -36,8 +36,11 @@ function App() {
           <Typography align='center'>
             <TopBar />
             <AuditReport/>
+            {/* <div className='backbutton'> */}
+            <div style={{marginTop:10}}>
             Audit Another file:
-            <Button variant="contained" onClick={()=>setButton(false)}>Click to go back</Button>
+            <Button variant="contained" onClick={()=>setButton(false)} size="small">Click to go back</Button>
+            </div>
           </Typography>
         </ThemeProvider>
       </div>

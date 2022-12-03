@@ -2,3 +2,19 @@ body{
     background-color: lightblue;
     /* color: green; */
 }
+.pdf-container{
+    width: 80vw;
+    left: 10vw;
+    top: 25vh;
+    height: 70vh;
+    background-color: #e4e4e4;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position:fixed;
+  }
+
+.backbutton{
+    margin-top: 1vh;
+}
